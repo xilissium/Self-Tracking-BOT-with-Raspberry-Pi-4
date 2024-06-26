@@ -27,7 +27,7 @@ make sure to have all of the yolo file in the same folder as the python scripte
 and for arduino you will need the mcore librairies
 
 ## Use
-to use this programe you will need to edit the BOB.py script to set your serialport, serial baudrate and camera number
+to use this programe you will need to edit the BOB.py script to set your serial port, serial baudrate and camera number
 after that juste launch it.
 ###
 you need to have all files in the same path as here.
@@ -41,3 +41,11 @@ you need to have all files in the same path as here.
 - ├── Mbot.ino
 - ├── BOB.py
 - └── README.md
+## USAGE
+- After starting the Python script, open your web browser and navigate to http://0.0.0.0:5000 or use the IP address of your device followed by port 5000 (x.x.x.x:5000).
+- The web interface will display the video feed from your camera.
+- Use the controls on the web page to interact with the robot.
+- Note: Disable person recognition system when no one is present to avoid unnecessary FPS drops.
+###
+take note that you can controle the bot with keyboard but its curently made for azerty key board (so z,q,s,d to controle it)
+feel free to edit the code for other keyboard layout.
