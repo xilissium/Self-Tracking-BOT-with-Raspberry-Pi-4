@@ -40,6 +40,9 @@ you need to have all files in the same path as here.
 - │   └── index.html
 - ├── Mbot.ino
 - ├── BOB.py
+- ├── yolov3-tiny
+- ├── yolov3-tiny.weights
+- ├── coco.names
 - └── README.md
 ## USAGE
 - After starting the Python script, open your web browser and navigate to http://0.0.0.0:5000 or use the IP address of your device followed by port 5000 (x.x.x.x:5000).
