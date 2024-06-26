@@ -35,7 +35,7 @@ you need to have all files in the same path as here.
 - yourrepository/
 - │
 - ├── static/
-- │   └── photos/
+- │   └── photos/(all arrown)
 - ├── templates/
 - │   └── index.html
 - ├── Mbot.ino
