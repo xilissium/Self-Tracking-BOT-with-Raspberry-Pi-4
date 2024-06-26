@@ -17,9 +17,9 @@ clone the git in the folder of your choice, installe all the necesary librarys a
 for python libraries:
 --> pip install Flask pyserial opencv-python numpy flask-cors 
 for the yoloV3:
---> wget https://pjreddie.com/media/files/yolov3-tiny.weights
---> wget https://raw.githubusercontent.com/pjreddie/darknet/master/cfg/yolov3-tiny.cfg
---> wget https://raw.githubusercontent.com/pjreddie/darknet/master/data/coco.names
+- wget https://pjreddie.com/media/files/yolov3-tiny.weights
+- wget https://raw.githubusercontent.com/pjreddie/darknet/master/cfg/yolov3-tiny.cfg
+- wget https://raw.githubusercontent.com/pjreddie/darknet/master/data/coco.names
 make sure to have all of the yolo file in the same folder as the python scripte
 
 and for arduino you will need the mcore librairies
