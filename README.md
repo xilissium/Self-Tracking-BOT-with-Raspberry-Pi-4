@@ -32,7 +32,7 @@ after that juste launch it.
 ###
 you need to have all files in the same path as here.
 ###
-yourrepository/
+- yourrepository/
 - │
 - ├── static/
 - │   └── photos/
