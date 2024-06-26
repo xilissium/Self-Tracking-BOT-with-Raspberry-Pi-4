@@ -33,11 +33,11 @@ after that juste launch it.
 you need to have all files in the same path as here.
 ###
 yourrepository/
-│
--├── static/
--│   └── photos/
--├── templates/
--│   └── index.html
--├── Mbot.ino
--├── BOB.py
--└── README.md
+- │
+- ├── static/
+- │   └── photos/
+- ├── templates/
+- │   └── index.html
+- ├── Mbot.ino
+- ├── BOB.py
+- └── README.md
