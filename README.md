@@ -3,7 +3,7 @@ all the necessary programs to make an autonomous robot using raspberry pi 4 and 
 
 
 ## Requirements
-
+### Software
 - Python 3.6+
 - Flask
 - pyserial
@@ -11,6 +11,10 @@ all the necessary programs to make an autonomous robot using raspberry pi 4 and 
 - numpy
 - flask-cors
 - yolov3-tiny package
+### Hardware
+- Raspberry pi 4 (or similare board with enough compute power for video recognition)
+- Mbot2 (with ultrasonic sensor and 2 motot), if you want to use an arduino you need to do the programe yourself
+- Generic camera/ webcam (i use the playstation 3 eyes camera)
 
 ## Installation
 clone the git in the folder of your choice, installe all the necesary librarys and uplaod the arduino (Mbot.ino) on the board and run the BOB.py
