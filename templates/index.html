@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SPY</title>
+    <style>
+        .arrow {
+            width: 50px;
+            height: 50px;
+            opacity: 0.5;
+        }
+
+        .arrow.active {
+            opacity: 1;
+        }
+
+        .arrow-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-left: 20px;
+        }
+
+        .arrow-row {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .arrow-cell {
+            margin: 5px;
+        }
+
+        .content-container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+
+        .video-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .controls {
+            margin-top: 10px;
+        }
+
+        .slider-container {
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            let autoCenterEnabled = false;
+            let detectPersonEnabled = true;
+            let autoDistanceEnabled = false;
+
+            // Capture des touches pressées et relâchées
+            document.addEventListener('keydown', (event) => {
+                const keyName = event.key;
+                if (['z', 'q', 's', 'd'].includes(keyName)) {
+                    fetch('/key_press', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({key: keyName})
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('message').innerText = data;
+                    });
+                    // Activer la flèche correspondante
+                    document.getElementById('arrow_' + keyName).classList.add('active');
+                }
+            });
+
+            document.addEventListener('keyup', (event) => {
+                const keyName = event.key;
+                if (['z', 'q', 's', 'd'].includes(keyName)) {
+                    fetch('/key_release', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({key: keyName})
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('message').innerText = data;
+                    });
+                    // Désactiver la flèche correspondante
+                    document.getElementById('arrow_' + keyName).classList.remove('active');
+                }
+            });
+
+            // Mettre à jour la position de l'objet
+            function updateObjectPosition() {
+                fetch('/object_position')
+                    .then(response => response.json())
+                    .then(data => {
+                        let positionText = 'Object position: X = ' + data.x + ', Y = ' + data.y;
+                        if (data.centered) {
+                            positionText += ' (Centered)';
+                        } else {
+                            positionText += ' (Not Centered)';
+                        }
+                        document.getElementById('object_position').innerText = positionText;
+                    });
+            }
+
+            // Mettre à jour la position de l'objet toutes les 500ms
+            setInterval(updateObjectPosition, 500);
+
+            // Mettre à jour l'affichage de la dernière photo
+            function updateLastPhoto() {
+                fetch('/last_photo')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('last_photo').src = data.path + '?t=' + new Date().getTime();
+                    });
+            }
+
+            function updateDistance() {
+                fetch('/distance')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('distance').innerText = 'Distance: ' + data.distance + ' cm';
+                    });
+            }
+
+            function updateTrackDistance(value) {
+                document.getElementById('trackDistanceValue').innerText = value + ' cm';
+                fetch('/update_track_distance', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({track_distance: value}),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            }
+
+            // Capturer une photo
+            document.getElementById('capture_button').addEventListener('click', () => {
+                fetch('/capture_photo')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('message').innerText = data.message;
+                        updateLastPhoto();
+                    });
+            });
+
+            // Activer/désactiver l'auto-centrage
+            document.getElementById('auto_center_button').addEventListener('click', () => {
+                autoCenterEnabled = !autoCenterEnabled;
+                fetch('/toggle_auto_center', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ enabled: autoCenterEnabled })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('message').innerText = data.message;
+                    document.getElementById('auto_center_button').innerText = autoCenterEnabled ? 'Disable Auto-Center' : 'Enable Auto-Center';
+                });
+            });
+
+            // Activer/désactiver la détection de personnes
+            document.getElementById('detect_person_button').addEventListener('click', () => {
+                detectPersonEnabled = !detectPersonEnabled;
+                fetch('/toggle_detect_person', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ enabled: detectPersonEnabled })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('message').innerText = data.message;
+                    document.getElementById('detect_person_button').innerText = detectPersonEnabled ? 'Disable Person Detection' : 'Enable Person Detection';
+                });
+            });
+
+            // Activer/désactiver la distance automatique
+            document.getElementById('auto_distance_button').addEventListener('click', () => {
+                autoDistanceEnabled = !autoDistanceEnabled;
+                fetch('/auto_distance', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ enabled: autoDistanceEnabled })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('message').innerText = data.message;
+                    document.getElementById('auto_distance_button').innerText = autoDistanceEnabled ? 'Disable Auto Distance' : 'Enable Auto Distance';
+                    if (autoDistanceEnabled) {
+                        startAutoDistance();
+                    } else {
+                        stopAutoDistance();
+                    }
+                });
+            });
+
+            function startAutoDistance() {
+                autoDistanceInterval = setInterval(updateDistance, 500);
+            }
+
+            function stopAutoDistance() {
+                clearInterval(autoDistanceInterval);
+            }
+
+            setInterval(updateDistance, 500);
+
+            // Initialisation de la valeur du curseur
+            document.getElementById('trackDistance').addEventListener('input', (event) => {
+                const value = event.target.value;
+                updateTrackDistance(value);
+            });
+
+            // Récupération de la valeur initiale du curseur depuis le serveur
+            fetch('/get_track_distance')
+                .then(response => response.json())
+                .then(data => {
+                    const trackDistance = data.track_distance;
+                    document.getElementById('trackDistance').value = trackDistance;
+                    document.getElementById('trackDistanceValue').innerText = trackDistance + ' cm';
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+</head>
+<body>
+    
+    <div class="content-container">
+        <div class="video-container">
+            <img src="{{ url_for('video_feed') }}" style="width: 640px; height: 480px;">
+            <!-- <img id="last_photo" src="" style="width: 320px; height: 240px;"> -->
+            <div class="controls">
+                <button id="capture_button">Capture Photo</button>
+                <button id="auto_center_button">Enable Auto-Center</button>
+                <button id="detect_person_button">Disable Person Detection</button>
+                <button id="auto_distance_button">Enable Auto Distance</button>
+            </div>
+            <div class="slider-container">
+                <label for="trackDistance">Track Distance: <span id="trackDistanceValue">50 cm</span></label>
+                <input type="range" id="trackDistance" name="trackDistance" min="10" max="400" value="50" oninput="updateTrackDistance(this.value)">
+            </div>
+            <p id="message"></p>
+            <p id="object_position"></p>
+            <p id="distance">Distance: - cm</p>
+        </div>
+        <div class="arrow-container">
+            <div class="arrow-row">
+                <div class="arrow-cell">
+                    <img src="{{ url_for('static', filename='up-arrow.png') }}" class="arrow" id="arrow_z">
+                </div>
+            </div>
+            <div class="arrow-row">
+                <div class="arrow-cell">
+                    <img src="{{ url_for('static', filename='left-arrow.png') }}" class="arrow" id="arrow_q">
+                </div>
+                <div class="arrow-cell">
+                    <img src="{{ url_for('static', filename='down-arrow.png') }}" class="arrow" id="arrow_s">
+                </div>
+                <div class="arrow-cell">
+                    <img src="{{ url_for('static', filename='right-arrow.png') }}" class="arrow" id="arrow_d">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
