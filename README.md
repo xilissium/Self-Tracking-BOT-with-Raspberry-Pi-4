@@ -29,4 +29,15 @@ and for arduino you will need the mcore librairies
 ## Use
 to use this programe you will need to edit the BOB.py script to set your serialport, serial baudrate and camera number
 after that juste launch it.
+###
 you need to have all files in the same path as here.
+###
+yourrepository/
+│
+├── static/
+│   └── photos/
+├── templates/
+│   └── index.html
+├── Mbot.ino
+├── BOB.py
+└── README.md
