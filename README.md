@@ -17,7 +17,7 @@ all the necessary programs to make an autonomous robot using raspberry pi 4 and 
 - Generic camera/ webcam (i use the playstation 3 eyes camera)
 
 ## Installation
-clone the git in the folder of your choice, installe all the necesary librarys and uplaod the arduino (Mbot.ino) on the board and run the BOB.py
+clone the git in the folder of your choice, installe all the necesary librarys and upload the arduino (Mbot.ino) on the board and run the BOB.py
 ### for python libraries:
 - pip install Flask pyserial opencv-python numpy flask-cors
 
